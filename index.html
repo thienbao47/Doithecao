@@ -1,1 +1,117 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CardSwap - Đổi thẻ cào</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f1f5f9;font-family:Arial;color:#172033}
+header{background:#155eef;color:white;padding:22px}
+header h2{margin:0}
+header p{margin-bottom:0}
+.container{max-width:500px;margin:auto;padding:16px}
+.card{background:white;padding:18px;border-radius:14px;margin-bottom:15px;box-shadow:0 2px 12px #0000000d}
+h3{margin-top:0}
+label{display:block;margin:13px 0 7px;font-weight:bold}
+input,select{width:100%;padding:13px;border:1px solid #d5dce8;border-radius:9px;font-size:15px}
+button{width:100%;padding:14px;background:#155eef;color:white;border:0;border-radius:9px;font-weight:bold;font-size:16px;margin-top:15px}
+.balance{font-size:27px;font-weight:bold;color:#155eef}
+.item{padding:12px 0;border-bottom:1px solid #eee}
+small{color:#64748b}
+</style>
+</head>
+<body>
+<header>
+<h2>💳 CardSwap</h2>
+<p>Hệ thống đổi thẻ cào trực tuyến</p>
+</header>
+<div class="container">
+<div class="card">
+<h3>Ví của bạn</h3>
+<div class="balance" id="balance">0đ</div>
+<small>Số dư tài khoản demo</small>
+</div>
+
+<div class="card">
+<h3>🔄 Đổi thẻ cào</h3>
+<label>Nhà mạng</label>
+<select id="network">
+<option>Viettel</option>
+<option>Mobifone</option>
+<option>Vinaphone</option>
+<option>Garena</option>
+<option>Zing</option>
+</select>
+
+<label>Mệnh giá</label>
+<select id="amount">
+<option value="10000">10.000đ</option>
+<option value="20000">20.000đ</option>
+<option value="50000">50.000đ</option>
+<option value="100000">100.000đ</option>
+<option value="200000">200.000đ</option>
+<option value="500000">500.000đ</option>
+</select>
+
+<label>Mã thẻ</label>
+<input id="code" placeholder="Nhập mã thẻ">
+
+<label>Số serial</label>
+<input id="serial" placeholder="Nhập số serial">
+
+<button onclick="exchange()">Gửi yêu cầu đổi thẻ</button>
+<p id="message"></p>
+</div>
+
+<div class="card">
+<h3>📜 Lịch sử giao dịch</h3>
+<div id="history">Chưa có giao dịch</div>
+</div>
+
+<div class="card">
+<h3>💰 Rút tiền</h3>
+<label>Số tiền muốn rút</label>
+<input id="withdraw" type="number" placeholder="Nhập số tiền">
+<label>Thông tin ví nhận tiền</label>
+<input id="wallet" placeholder="Số điện thoại ví">
+<button onclick="withdrawMoney()">Gửi yêu cầu rút tiền</button>
+<p id="withdrawMessage"></p>
+</div>
+</div>
+
+<script>
+let balance=0;
+function exchange(){
+let network=document.getElementById('network').value;
+let amount=Number(document.getElementById('amount').value);
+let code=document.getElementById('code').value.trim();
+let serial=document.getElementById('serial').value.trim();
+if(!code||!serial){
+document.getElementById('message').innerText="Vui lòng nhập đủ mã thẻ và serial!";
+return;
+}
+let history=document.getElementById('history');
+if(history.innerText==="Chưa có giao dịch")history.innerHTML="";
+let item=document.createElement('div');
+item.className="item";
+item.textContent=network+" - "+amount.toLocaleString("vi-VN")+"đ - Chờ xử lý";
+history.prepend(item);
+document.getElementById('message').innerText="Đã ghi nhận yêu cầu demo!";
+document.getElementById('code').value="";
+document.getElementById('serial').value="";
+}
+function withdrawMoney(){
+let amount=Number(document.getElementById('withdraw').value);
+let wallet=document.getElementById('wallet').value.trim();
+if(!amount||amount<=0||!wallet){
+document.getElementById('withdrawMessage').innerText="Vui lòng nhập đủ thông tin!";
+return;
+}
+document.getElementById('withdrawMessage').innerText="Đã tạo yêu cầu demo. Chưa có thanh toán thật.";
+}
+</script>
+</body>
+</html>
+
